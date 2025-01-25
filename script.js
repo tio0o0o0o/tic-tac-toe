@@ -56,16 +56,16 @@ const gameboard = (function() {
     return { checkForWinner, placeTile, printTiles, allTilesTaken };
 })();
 
-const gameController = (function() {
+const gameController = (function(board) {
     let currentTurn = "x";
 
     function playTurn(target) {
-        gameboard.placeTile(target, currentTurn);
-        gameboard.printTiles();
-        if (gameboard.checkForWinner(currentTurn)) {
+        board.placeTile(target, currentTurn);
+        board.printTiles();
+        if (board.checkForWinner(currentTurn)) {
             console.log(`${currentTurn} is the winner!`);
         }
-        else if (gameboard.allTilesTaken()) {
+        else if (board.allTilesTaken()) {
             console.log("It's a tie!");
         }
         else {
@@ -79,4 +79,4 @@ const gameController = (function() {
     }
 
     return { playTurn };
-})();
+})(gameboard);
