@@ -40,8 +40,9 @@ const gameboard = (function() {
 
     function allTilesTaken() {
         for (let i = 0; i < tiles.length; i++) {
-            tileIsEmpty(i);
+            if (tileIsEmpty(i)) return false;
         }
+        return true;
     }
 
     function tileTakenBy(target, mark) {
@@ -67,7 +68,10 @@ const gameController = (function() {
         else if (gameboard.allTilesTaken()) {
             console.log("It's a tie!");
         }
-        else nextTurn();
+        else {
+            nextTurn();
+            console.log(`${currentTurn}'s turn`);
+        }
     }
 
     function nextTurn() {
