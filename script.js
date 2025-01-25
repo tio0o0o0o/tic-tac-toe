@@ -59,10 +59,10 @@ const gameBoard = (function() {
 
 const gameController = (function(board) {
     let currentTurn = "x";
-    let gameState = "game";
+    let gameState = "xsTurn";
 
     function playTurn(target) {
-        if (gameState !== "game") return false;
+        if (gameState !== "xsTurn" && gameState !== "osTurn") return false;
 
         console.log(`Play turn target: ${target}`);
 
@@ -71,29 +71,37 @@ const gameController = (function(board) {
         board.placeTile(target, currentTurn);
         board.printTiles();
         if (board.checkForWinner(currentTurn)) {
-            gameState = "gameOver";
+            gameState = `${currentTurn}Won`;
             console.log(`${currentTurn} is the winner!`);
         }
         else if (board.allTilesTaken()) {
-            gameState = "gameOver";
+            gameState = "tie";
             console.log("It's a tie!");
         }
         else {
             nextTurn();
+            gameState = `${currentTurn}sTurn`;
             console.log(`${currentTurn}'s turn`);
         }
+
+        console.log(`Game state: ${gameState}`);
+    }
+
+    function getGameState() {
+        return gameState;
     }
 
     function nextTurn() {
         currentTurn === "x" ? currentTurn = "o" : currentTurn = "x";
     }
 
-    return { playTurn };
+    return { playTurn, gameState, getGameState };
 })(gameBoard);
 
 
 const domController = (function(game, board) {
     const tiles = document.querySelectorAll(".tile");
+    const gameStateText = document.querySelector(".gameStateText");
 
     function getCorrespondingImage(mark) {
         switch(mark) {
@@ -110,7 +118,30 @@ const domController = (function(game, board) {
         for (let i = 0; i < tiles.length; i++) {
             tiles[i].style.backgroundImage = getCorrespondingImage(board.tiles[i]);
         }
+        // debugger;
+        console.log(game.getGameState());
+        switch(game.getGameState()) {
+            case "xWon":
+                gameStateText.textContent = "X wins!";
+                break;
+            case "oWon":
+                gameStateText.textContent = "O wins!";
+                break;
+            case "xsTurn":
+                gameStateText.textContent = "X's turn";
+                break;
+            case "osTurn":
+                gameStateText.textContent = "O's turn";
+                break;
+            case "tie":
+                gameStateText.textContent = "It's a tie!";
+                break;
+            default:
+                break;
+        }
     }
+
+    updateDisplay();
 
     tiles.forEach((tile) => {
         tile.addEventListener("click", (event) => {
