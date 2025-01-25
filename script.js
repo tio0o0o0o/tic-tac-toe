@@ -98,9 +98,9 @@ const domController = (function(game, board) {
     function getCorrespondingImage(mark) {
         switch(mark) {
             case "x": 
-                return "url(assets/images/x-black.svg)";
+                return "url(assets/images/x.svg)";
             case "o":
-                return "url(assets/images/o-black.svg)";
+                return "url(assets/images/o.svg)";
             default:
                 break;
         }
