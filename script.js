@@ -59,16 +59,23 @@ const gameBoard = (function() {
 
 const gameController = (function(board) {
     let currentTurn = "x";
+    let gameState = "game";
 
     function playTurn(target) {
+        if (gameState !== "game") return false;
+
         console.log(`Play turn target: ${target}`);
+
         if (!board.tileIsEmpty(target)) return false;
+
         board.placeTile(target, currentTurn);
         board.printTiles();
         if (board.checkForWinner(currentTurn)) {
+            gameState = "gameOver";
             console.log(`${currentTurn} is the winner!`);
         }
         else if (board.allTilesTaken()) {
+            gameState = "gameOver";
             console.log("It's a tie!");
         }
         else {
