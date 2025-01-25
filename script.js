@@ -1,4 +1,4 @@
-const gameboard = (function() {
+const gameBoard = (function() {
     let tiles = ["", "", "", "", "", "", "", "", ""];
 
     const winPatterns = [
@@ -53,13 +53,15 @@ const gameboard = (function() {
         tiles[target] = mark;
     }
 
-    return { checkForWinner, placeTile, printTiles, allTilesTaken, tileIsEmpty };
+    return { checkForWinner, placeTile, printTiles, allTilesTaken, tileIsEmpty, tiles };
 })();
+
 
 const gameController = (function(board) {
     let currentTurn = "x";
 
     function playTurn(target) {
+        console.log(`Play turn target: ${target}`);
         if (!board.tileIsEmpty(target)) return false;
         board.placeTile(target, currentTurn);
         board.printTiles();
@@ -80,4 +82,35 @@ const gameController = (function(board) {
     }
 
     return { playTurn };
-})(gameboard);
+})(gameBoard);
+
+
+const domController = (function(game, board) {
+    const tiles = document.querySelectorAll(".tile");
+
+    function getCorrespondingImage(mark) {
+        switch(mark) {
+            case "x": 
+                return "url(assets/images/x-black.svg)";
+            case "o":
+                return "url(assets/images/o-black.svg)";
+            default:
+                break;
+        }
+    }
+
+    function updateDisplay() {
+        for (let i = 0; i < tiles.length; i++) {
+            tiles[i].style.backgroundImage = getCorrespondingImage(board.tiles[i]);
+        }
+    }
+
+    tiles.forEach((tile) => {
+        tile.addEventListener("click", (event) => {
+            game.playTurn(tile.getAttribute("data-index"));
+            updateDisplay();
+        });
+    });
+
+    return {};
+})(gameController, gameBoard);
