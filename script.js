@@ -29,6 +29,15 @@ const gameboard = (function() {
         return tiles[target] === "";
     }
 
+    function printTiles() {
+        console.log(`
+            --Tiles--
+            | ${tiles[0]} | ${tiles[1]} | ${tiles[2]} |
+            | ${tiles[3]} | ${tiles[4]} | ${tiles[5]} |
+            | ${tiles[6]} | ${tiles[7]} | ${tiles[8]} |
+        `);
+    }
+
     function allTilesTaken() {
         for (let i = 0; i < tiles.length; i++) {
             tileIsEmpty(i);
@@ -43,7 +52,7 @@ const gameboard = (function() {
         tiles[target] = mark;
     }
 
-    return { tiles, checkForWinner, placeTile };
+    return { tiles, checkForWinner, placeTile, printTiles };
 })();
 
 
