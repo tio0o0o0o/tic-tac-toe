@@ -52,9 +52,27 @@ const gameboard = (function() {
         tiles[target] = mark;
     }
 
-    return { tiles, checkForWinner, placeTile, printTiles };
+    return { checkForWinner, placeTile, printTiles };
 })();
 
+const gameController = (function() {
+    let currentTurn = "x";
 
+    function playTurn(target) {
+        gameboard.placeTile(target, currentTurn);
+        gameboard.printTiles();
+        if (gameboard.checkForWinner(currentTurn)) {
+            console.log(`${currentTurn} is the winner!`);
+        }
+        else if (gameboard.allTilesTaken()) {
+            console.log("It's a tie!");
+        }
+        else nextTurn();
+    }
 
+    function nextTurn() {
+        currentTurn === "x" ? currentTurn = "o" : currentTurn = "x";
+    }
 
+    return { playTurn };
+})();
