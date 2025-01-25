@@ -60,7 +60,7 @@ const gameController = (function(board) {
     let currentTurn = "x";
 
     function playTurn(target) {
-        if (!board.tileIsEmpty()) return false;
+        if (!board.tileIsEmpty(target)) return false;
         board.placeTile(target, currentTurn);
         board.printTiles();
         if (board.checkForWinner(currentTurn)) {
