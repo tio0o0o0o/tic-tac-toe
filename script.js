@@ -52,7 +52,7 @@ const gameboard = (function() {
         tiles[target] = mark;
     }
 
-    return { checkForWinner, placeTile, printTiles };
+    return { checkForWinner, placeTile, printTiles, allTilesTaken };
 })();
 
 const gameController = (function() {
