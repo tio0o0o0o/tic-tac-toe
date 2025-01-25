@@ -53,13 +53,14 @@ const gameboard = (function() {
         tiles[target] = mark;
     }
 
-    return { checkForWinner, placeTile, printTiles, allTilesTaken };
+    return { checkForWinner, placeTile, printTiles, allTilesTaken, tileIsEmpty };
 })();
 
 const gameController = (function(board) {
     let currentTurn = "x";
 
     function playTurn(target) {
+        if (!board.tileIsEmpty()) return false;
         board.placeTile(target, currentTurn);
         board.printTiles();
         if (board.checkForWinner(currentTurn)) {
