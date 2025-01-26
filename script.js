@@ -53,7 +53,15 @@ const gameBoard = (function() {
         tiles[target] = mark;
     }
 
-    return { checkForWinner, placeTile, printTiles, allTilesTaken, tileIsEmpty, tiles };
+    function resetTiles() {
+        tiles = ["", "", "", "", "", "", "", "", ""];
+    }
+
+    function getTiles() {
+        return tiles;
+    }
+
+    return { checkForWinner, placeTile, printTiles, allTilesTaken, tileIsEmpty, getTiles, resetTiles };
 })();
 
 
@@ -95,13 +103,20 @@ const gameController = (function(board) {
         currentTurn === "x" ? currentTurn = "o" : currentTurn = "x";
     }
 
-    return { playTurn, gameState, getGameState };
+    function resetGame() {
+        currentTurn = "x";
+        gameState = "xsTurn";
+        board.resetTiles();
+    }
+
+    return { playTurn, gameState, getGameState, resetGame };
 })(gameBoard);
 
 
 const domController = (function(game, board) {
     const tiles = document.querySelectorAll(".tile");
     const gameStateText = document.querySelector(".gameStateText");
+    const restartButton = document.querySelector("#restartButton");
 
     function getCorrespondingImage(mark) {
         switch(mark) {
@@ -110,13 +125,13 @@ const domController = (function(game, board) {
             case "o":
                 return "url(assets/images/o.svg)";
             default:
-                break;
+                return "";
         }
     }
 
     function updateDisplay() {
         for (let i = 0; i < tiles.length; i++) {
-            tiles[i].style.backgroundImage = getCorrespondingImage(board.tiles[i]);
+            tiles[i].style.backgroundImage = getCorrespondingImage(board.getTiles()[i]);
         }
         // debugger;
         console.log(game.getGameState());
@@ -144,10 +159,15 @@ const domController = (function(game, board) {
     updateDisplay();
 
     tiles.forEach((tile) => {
-        tile.addEventListener("click", (event) => {
+        tile.addEventListener("click", (e) => {
             game.playTurn(tile.getAttribute("data-index"));
             updateDisplay();
         });
+    });
+
+    restartButton.addEventListener("click", (e) => {
+        game.resetGame();
+        updateDisplay();
     });
 
     return {};
