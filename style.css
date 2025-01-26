@@ -43,13 +43,15 @@ body {
 }
 
 main {
-    width: min(90vw, 450px);
-    height: min(90vw, 450px);
+    width: min(90vw, 480px);
+    height: min(90vw, 480px);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 1fr;
     background-color: var(--accentColor);
-    gap: 10px;
+    gap: 5px;
+    /* Add outline to prevent yellow background color from leaking */
+    outline: 1px solid var(--black);
 }
 
 .tile {
